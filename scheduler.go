@@ -2,7 +2,6 @@ package goscheduler
 
 import (
 	"context"
-	"fmt"
 	"sync"
 	"time"
 )
@@ -72,7 +71,7 @@ func (s *Scheduler) Run(ctx context.Context) {
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Println("Scheduler stopped:", ctx.Err())
+			// fmt.Println("Scheduler stopped:", ctx.Err())
 			return
 		case <-ticker.C:
 			s.mu.Lock()

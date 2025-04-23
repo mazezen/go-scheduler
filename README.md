@@ -10,21 +10,45 @@ go get github.com/mazezen/go-scheduler
 
 ```go
 func main() {
+	// 创建调度器
 	scheduler := NewScheduler()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	fmt.Println(time.Now())
-	execTime1 := time.Now().Add(5 * time.Second)
-	scheduler.AddTask(1, "Task 1", execTime1, func() {
-		fmt.Println(time.Now(), " Task 1 is running!")
+	// 示例任务1：5秒后执行
+	scheduler.AddTask(1, "Task 1", time.Now().Add(5*time.Second), func(ctx context.Context) {
+		select {
+		case <-ctx.Done():
+			fmt.Printf("Task 1 canceled: %v\n", ctx.Err())
+			return
+		default:
+			fmt.Println("Task 1 is running!")
+		}
 	})
 
-	execTime2 := time.Now().Add(10 * time.Second)
-	scheduler.AddTask(2, "Task 2", execTime2, func() {
-		fmt.Println(time.Now(), "Task 2 is running with some complex logic!")
+	// 示例任务2：10秒后执行
+	scheduler.AddTask(2, "Task 2", time.Now().Add(10*time.Second), func(ctx context.Context) {
+		select {
+		case <-ctx.Done():
+			fmt.Printf("Task 2 canceled: %v\n", ctx.Err())
+			return
+		default:
+			fmt.Println("Task 2 is running with complex logic!")
+		}
 	})
 
+	// 启动调度器
 	fmt.Println("Scheduler started...")
-	scheduler.Run()
+	go scheduler.Run(ctx)
+
+	// 模拟取消任务
+	time.Sleep(2 * time.Second)
+	scheduler.CancelTask(1)
+
+	// 等待任务完成
+	time.Sleep(15 * time.Second)
+	cancel() // 停止调度器
+	fmt.Println("Main function exiting...")
 }
 
 ```
