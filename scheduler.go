@@ -1,7 +1,6 @@
 package goscheduler
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -27,11 +26,16 @@ func (s *Scheduler) AddTask(id int, name string, execTime time.Time, job func())
 
 func (s *Scheduler) Run() {
 	for {
+		if len(s.tasks) == 0 {
+			// fmt.Println("All tasks completed, scheduler stopped.")
+			return
+		}
+
 		now := time.Now()
 		for _, task := range s.tasks {
 			// 检查是否到达执行时间
 			if now.After(task.ExecTime) || now.Equal(task.ExecTime) {
-				fmt.Printf("Executing task: %s (ID: %d) at %s\n", task.Name, task.ID, now.Format(time.RFC3339))
+				// fmt.Printf("Executing task: %s (ID: %d) at %s\n", task.Name, task.ID, now.Format(time.RFC3339))
 				task.Job()
 				// 从任务列表中移除已执行的任务
 				s.removeTask(task.ID)
