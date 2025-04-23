@@ -32,14 +32,14 @@ func main() {
 ## 结果
 
 ```markdown
-tasks num: 0
+Task 1 (Task 1) added, scheduled at 2025-04-23 19:45:20.942743 +0800 CST m=+5.000067168
+Task 2 (Task 2) added, scheduled at 2025-04-23 19:45:25.942903 +0800 CST m=+10.000226876
 Scheduler started...
-Executing task: Task 1 (ID: 1) at 2025-04-23T13:53:01+08:00
-tasks num: 2
-Task 1 is running!
-Executing task: Task 2 (ID: 2) at 2025-04-23T13:53:06+08:00
-tasks num: 1
-Task 2 is running with some complex logic!
-All tasks completed, scheduler stopped.
-tasks num: 0
+Task 1 (Task 1) canceled
+Task 1 (Task 1) was canceled, removing
+Task 1 removed
+Executing task 2 (Task 2) at 2025-04-23 19:45:25.943912 +0800 CST m=+10.001363043
+Task 2 is running with complex logic!
+Task 2 removed
+Main function exiting...
 ```
